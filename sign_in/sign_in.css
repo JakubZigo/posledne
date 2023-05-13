@@ -11,15 +11,16 @@ button{
 }
 #lan{
     background-color: #2F4858;
-    color: #FAC898;
     border: none;
-    height: 90%;
+    box-shadow: none;
     display: block;
+    height: 90%;
+    font-size: xx-large;
+    color: #FAC898;
 }
 #lan:hover{
-    border: solid 1px #FAC898;
+    border-color: #FAC898;
     height: 100%;
-    display: block;
 }
 
 button:hover{
