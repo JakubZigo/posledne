@@ -1,0 +1,33 @@
+body{
+    background-color: #2F4858;
+    color: #FAC898;
+    font-size: large;
+}
+
+button{
+    background-color: #2F4858;
+    color: #FAC898;
+    border: solid 1px #FAC898;
+}
+#lan{
+    background-color: #2F4858;
+    color: #FAC898;
+    border: none;
+    height: 90%;
+    display: block;
+}
+#lan:hover{
+    border: solid 1px #FAC898;
+    height: 100%;
+    display: block;
+}
+
+button:hover{
+    background-color: #FAC898;
+    color: #2F4858;
+    border: solid 1px #FAC898;
+}
+
+i{
+    color: #FAC898;
+}
