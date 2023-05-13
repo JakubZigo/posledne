@@ -98,44 +98,44 @@ function getQuestionsFromDbByFileName($db, $name) {
 
 
 
-function printQuestionsByFileName($db, $fileName) {
+function printRandomQuestionFromFileName($db, $fileName) {
 //    need to include these libraries in html
 //    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 //    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
     $questions = getQuestionsFromDbByFileName($db, $fileName);
 
-    foreach($questions as $q) {
-        $question = $q["question"];
-        $solution = $q['solution'];
-        $name = $q['name'];
+    $q = $questions[array_rand($questions)];
 
-        // Replace \includegraphics with an img tag, assuming the path is correct
-        $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="$1" style="width: 50%"/>', $question);
+    $question = $q["question"];
+    $solution = $q['solution'];
+    $name = $q['name'];
 
-        // Find and modify LaTeX expressions in $question and $solution
-        $question = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
-            if (substr($matches[0], 0, 2) === '$$') {
-                return $matches[0];
-            } else {
-                return '$$' . $matches[1] . '$$';
-            }
-        }, $question);
+    // Replace \includegraphics with an img tag, assuming the path is correct
+    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="$1" style="width: 50%"/>', $question);
 
-        $solution = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
-            if (substr($matches[0], 0, 2) === '$$') {
-                return $matches[0];
-            } else {
-                return '$$' . $matches[1] . '$$';
-            }
-        }, $solution);
+    // Find and modify LaTeX expressions in $question and $solution
+    $question = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
+        if (substr($matches[0], 0, 2) === '$$') {
+            return $matches[0];
+        } else {
+            return '$$' . $matches[1] . '$$';
+        }
+    }, $question);
 
-        echo '<div>';
-        echo '<h2>' . $name . '</h2>';
-        echo $question;
-        echo $solution;
-        echo '</div>';
-    }
+    $solution = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
+        if (substr($matches[0], 0, 2) === '$$') {
+            return $matches[0];
+        } else {
+            return '$$' . $matches[1] . '$$';
+        }
+    }, $solution);
+
+    echo '<div>';
+    echo '<h2>' . $name . '</h2>';
+    echo $question;
+    echo '<div>'."Správná odpověď: ".$solution.'<div>';
+    echo '</div>';
 }
 
 ?>
@@ -164,7 +164,10 @@ function printQuestionsByFileName($db, $fileName) {
 //    parseLatexFileToDb($pdo, "odozva01pr.tex");
 //    parseLatexFileToDb($pdo, "odozva02pr.tex");
 
-    printQuestionsByFileName($pdo, "blokovka02pr.tex");
+    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
+    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
+    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
+    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
 
     ?>
 
