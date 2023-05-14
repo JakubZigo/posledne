@@ -5,9 +5,10 @@ body{
 }
 
 button{
-    background-color: #2F4858;
-    color: #FAC898;
-    border: solid 1px #FAC898;
+    background-color: #FAC898;
+    color: #2F4858;
+    font-size: xx-large;
+    border: none;
 }
 #lan{
     background-color: #2F4858;
@@ -24,11 +25,28 @@ button{
 }
 
 button:hover{
-    background-color: #FAC898;
-    color: #2F4858;
-    border: solid 1px #FAC898;
+    background-color: #2F4858;
+    color: #FAC898;
 }
 
 i{
     color: #FAC898;
+}
+
+.card-body{
+    background-color: #FAC898;
+    color: #2F4858;
+    font-size: large;
+}
+.card{
+    background-color: #FAC898;
+    color: #2F4858;
+    font-size: large;
+    border: none;
+    box-shadow: none;
+    height: 150px;
+}
+.darkIcon{
+    color: #2F4858;
+
 }
