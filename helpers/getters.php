@@ -1,7 +1,5 @@
-
 <?php
 require_once "../db/Database.php";
-
 function getTask($id, $lan){
     $db = new Database();
     $db = $db->getConnection();
@@ -22,8 +20,8 @@ function getTask($id, $lan){
 
     echo '
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <div class="card rounded">
-            <div class="card-body h-50">
+        <div class="card">
+            <div class="card-body h-50 rounded">
                 <div class="container text-center">
                     <div class="row">
                         <div class="col-9">
