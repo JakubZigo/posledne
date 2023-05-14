@@ -68,57 +68,46 @@ function findLatestRow($db, $name) {
     return $id;
 }
 
-function getQuestionsFromDbByFileName($db, $name) {
-    $tasks = array();
+//function getQuestionsFromDbByFileName($db, $name) {
+//    $tasks = array();
+//
+//    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE file_name = :file_name";
+//    $stmt = $db->prepare($sql);
+//    $stmt->bindParam(":file_name", $name, PDO::PARAM_STR);
+//    $stmt->execute();
+//
+//    if ($stmt->rowCount() > 0) {
+//        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//
+//        foreach ($rows as $row) {
+//            $task = array();
+//            $task['id'] = $row["id"];
+//            $task['name'] = $row["name"];
+//            $task['question'] = $row["question"];
+//            $task['solution'] = $row["solution"];
+//
+//            $tasks[] = $task;
+//        }
+//    } else {
+//        echo "Nenachadza sa v tabulke alebo je duplicitne.";
+//    }
+//
+//    return $tasks;
+//}
+function getQuestionFromDbById($db, $id) {
 
-    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE file_name = :file_name";
+    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE id = :id LIMIT 1";
     $stmt = $db->prepare($sql);
-    $stmt->bindParam(":file_name", $name, PDO::PARAM_STR);
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
 
-        foreach ($rows as $row) {
-            $task = array();
-            $task['id'] = $row["id"];
-            $task['name'] = $row["name"];
-            $task['question'] = $row["question"];
-            $task['solution'] = $row["solution"];
-
-            $tasks[] = $task;
-        }
+        return $row;
     } else {
         echo "Nenachadza sa v tabulke alebo je duplicitne.";
     }
-
-    return $tasks;
-}
-function getQuestionFromDbByName($db, $name) {
-    $tasks = array();
-
-    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE name = :name LIMIT 1";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(":name", $name, PDO::PARAM_STR);
-    $stmt->execute();
-
-    if ($stmt->rowCount() > 0) {
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($rows as $row) {
-            $task = array();
-            $task['id'] = $row["id"];
-            $task['name'] = $row["name"];
-            $task['question'] = $row["question"];
-            $task['solution'] = $row["solution"];
-
-            $tasks[] = $task;
-        }
-    } else {
-        echo "Nenachadza sa v tabulke alebo je duplicitne.";
-    }
-
-    return $tasks;
 }
 
 
@@ -165,12 +154,12 @@ function getQuestionFromDbByName($db, $name) {
 //}
 
 
-function printQuestionByName($db, $fileName) {
+function printQuestionById($db, $qId) {
 //    need to include these libraries in html
 //    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 //    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    $q = getQuestionFromDbByName($db, $fileName);
+    $q = getQuestionFromDbById($db, $qId);
 
     $question = $q["question"];
     $solution = $q['solution'];
@@ -207,39 +196,40 @@ function printQuestionByName($db, $fileName) {
 
 ?>
 
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-<!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
-<!--    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
-<!--</head>-->
-<!--<style>-->
-<!--    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}-->
-<!--</style>-->
-<!--<body>-->
-<!---->
-<!---->
-<!---->
-<!--    --><?php
-//
-//    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
-//    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-//
-//
-////    parseLatexFileToDb($pdo, "blokovka01pr.tex");
-////    parseLatexFileToDb($pdo, "blokovka02pr.tex");
-////    parseLatexFileToDb($pdo, "odozva01pr.tex");
-////    parseLatexFileToDb($pdo, "odozva02pr.tex");
-//
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<style>
+    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}
+</style>
+<body>
+
+
+
+    <?php
+
+    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+
+//    parseLatexFileToDb($pdo, "blokovka01pr.tex");
+//    parseLatexFileToDb($pdo, "blokovka02pr.tex");
+//    parseLatexFileToDb($pdo, "odozva01pr.tex");
+//    parseLatexFileToDb($pdo, "odozva02pr.tex");
+
 //    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
 //    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
 //    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
 //    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
-//
-//    ?>
-<!---->
-<!--</body>-->
-<!--</html>-->
+
+    printQuestionById($pdo, 35);
+    ?>
+
+</body>
+</html>
 
 
 
