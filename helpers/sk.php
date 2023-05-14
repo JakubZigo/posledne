@@ -17,5 +17,6 @@ $lan = array(
     "points" => "Body",
     "students" => "Študenti",
     "surname" => "Priezvisko",
-    "firstname" => "Meno"
+    "firstname" => "Meno",
+    "answerPrompt" => "Sem napíšte odpoveď"
 );

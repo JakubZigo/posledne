@@ -22,8 +22,8 @@ function getTask($id, $lan){
 
     echo '
     <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
-        <div class="card rounded">
-            <div class="card-body h-50">
+        <div class="card">
+            <div class="card-body h-50 rounded">
                 <div class="container text-center">
                     <div class="row">
                         <div class="col-9">
@@ -41,7 +41,7 @@ function getTask($id, $lan){
                         echo '</div>';
                         } else {
                             echo '<i class="bi bi-x-circle-fill darkIcon"></i>
-                                <a href="../student/submitTask.php"><i class="bi bi-pencil-square darkIcon"></i></a>
+                                <a href="../student/submitTask.php?id=' . $row['question_id'] . '"><i class="bi bi-pencil-square darkIcon"></i></a>
                             </div>
                         </div>
                         <div class="row">

@@ -166,7 +166,7 @@ function printQuestionById($db, $qId) {
     $name = $q['name'];
 
     // Replace \includegraphics with an img tag, assuming the path is correct
-    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="$1" style="width: 50%"/>', $question);
+    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="../$1" style="width: 50%"/>', $question);
 
     // Find and modify LaTeX expressions in $question and $solution
     $question = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
@@ -196,40 +196,40 @@ function printQuestionById($db, $qId) {
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<style>
-    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}
-</style>
-<body>
-
-
-
-    <?php
-
-    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-
-//    parseLatexFileToDb($pdo, "blokovka01pr.tex");
-//    parseLatexFileToDb($pdo, "blokovka02pr.tex");
-//    parseLatexFileToDb($pdo, "odozva01pr.tex");
-//    parseLatexFileToDb($pdo, "odozva02pr.tex");
-
-//    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
-//    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
-//    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
-//    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
-
-    printQuestionById($pdo, 35);
-    ?>
-
-</body>
-</html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+<!--    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+<!--</head>-->
+<!--<style>-->
+<!--    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}-->
+<!--</style>-->
+<!--<body>-->
+<!---->
+<!---->
+<!---->
+<!--    --><?php
+//
+//    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+//    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//
+//
+////    parseLatexFileToDb($pdo, "blokovka01pr.tex");
+////    parseLatexFileToDb($pdo, "blokovka02pr.tex");
+////    parseLatexFileToDb($pdo, "odozva01pr.tex");
+////    parseLatexFileToDb($pdo, "odozva02pr.tex");
+//
+////    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
+////    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
+////    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
+////    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
+//
+//    printQuestionById($pdo, 35);
+//    ?>
+<!---->
+<!--</body>-->
+<!--</html>-->
 
 
 

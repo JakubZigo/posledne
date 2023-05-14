@@ -18,5 +18,6 @@ $lan = array(
     "disable" => "Disable",
     "surname" => "Surname",
     "firstname" => "Name",
-    "points" => "Points"
+    "points" => "Points",
+    "answerPrompt" => "Enter your answer here"
 );
