@@ -8,6 +8,7 @@ $lan = array(
     "student" => "Žiak",
     "teacher" => "Učiteľ",
     "generate" => "Vygenerovať",
+    "generated" => "Vygenerované",
     "score" => "Body: ",
     "file" => "Súbor",
     "files" => "Súbory",
@@ -17,5 +18,6 @@ $lan = array(
     "points" => "Body",
     "students" => "Študenti",
     "surname" => "Priezvisko",
-    "firstname" => "Meno"
+    "firstname" => "Meno",
+    "submitted" => "Odovzdané"
 );

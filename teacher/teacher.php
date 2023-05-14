@@ -13,16 +13,28 @@ $query = "SELECT name, enabled, max_points FROM latex";
 $stmt = $db->query($query);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-//       id, name, question, solution, file_name, latex_id
-
 $names = "SELECT id, firstname, surname FROM users WHERE role='student'";
-$stmt = $db->query($names);
-$nameResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$stmt1 = $db->query($names);
+$nameResults = $stmt1->fetchAll(PDO::FETCH_ASSOC);
+
+$grades = "SELECT student_id, COUNT(student_id) as 'generated', SUM(submitted) as 'submitted',  SUM(points) as pointsSum FROM answer GROUP BY student_id";
+$stmt2 = $db->query($grades);
+$gradesResults = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
 
-//$studies = "SELECT  FROM users WHERE role='student'";
-//$stmt = $db->query($studies);
-//$studiesResults= $stmt->fetchAll(PDO::FETCH_ASSOC);
+$exercises = "SELECT  , enabled, max_points FROM latex";
+$stmt = $db->query($query);
+$exerciseResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+$combinedData = [];
+foreach ($nameResults as $nameResult) {
+    foreach ($gradesResults as $gradeResult) {
+        if ($nameResult['id'] === $gradeResult['student_id']) {
+            $combinedData[] = array_merge($nameResult, $gradeResult);
+        }
+    }
+}
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -58,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
     }
 
-
     header("Refresh:0");
 }
 
@@ -72,6 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="../sign_in/sign_in.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.print.min.js"></script>
+
     <link rel="stylesheet" href="table.css">
     <title>Teacher</title>
 </head>
@@ -84,9 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit" id="lan"><i class="bi bi-translate m-lg-1" style="font-size: 2rem;"></i></button>
         </form>
         <a href="../sign_in/sign_out.php"><i class="bi bi-door-closed" style="font-size: 2rem;"></i></a>
-
     </div>
 </div>
+
 <div class="container center">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="big-heading"><?php echo $lan['teacher'] ?></h1>
@@ -139,58 +163,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </tbody>
     </table>
 
+    <h2><br>
+        <th><?php echo $lan['students'] ?></th>
+        :</br></h2>
 
-
-    <h2><br><th><?php echo $lan['students'] ?></th>:</br></h2>
-    <div style="flex-direction: row;">Sort by:
-    <?php
-    echo '<form action="teacher.php" method="post">
-            <input type="hidden" name="sort" value="id">
-            <input type="submit" value="ID">
-        </form>';
-
-    echo '<form action="teacher.php" method="post">
-            <input type="hidden" name="sort" value="name">
-            <input type="submit" value="Name">
-        </form>';
-
-    echo '<form action="teacher.php" method="post">
-              <input type="hidden" name="sort" value="surname">
-              <input type="submit" value="Surname">
-        </form>';
-
-    echo '<form action="teacher.php" method="post">
-            <input type="hidden" name="sort" value="surname">
-            <input type="submit" value="Surname">
-        </form>';
-    ?>
-
-
-
-    </div>
-    <table id="enableTable">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th><?php echo $lan['firstname'] ?></th>
-            <th><?php echo $lan['surname'] ?></th>
-        </tr>
-        </thead>
-        <tbody>
+    <div id="tableNoEscobar">
         <?php
-
-        for ($i = 0; $i < count($nameResults); $i++) {
+        echo '<table id="myTable" class="display nowrap"">';
+        echo '<thead>';
+        echo '<tr><th>' . $lan['firstname'] . '</th><th>' . $lan['firstname'] . '</th><th>' . $lan['surname'] . '</th><th>' . $lan['generated'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['points'] . '</th></tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        foreach ($combinedData as $row) {
             echo '<tr>';
-            echo '<td>' . $nameResults[$i]["id"] . '</td>';
-            echo '<td>' . $nameResults[$i]["firstname"] . '</td>';
-            echo '<td>' . $nameResults[$i]["surname"] . '</td>';
+            echo '<td>' . $row['id'] . '</td>';
+            echo '<td>' . $row['firstname'] . '</td>';
+            echo '<td>' . $row['surname'] . '</td>';
+            if ($row['generated'] == 0) {
+                echo '<td>0</td>';
+            } else {
+                echo '<td>' . $row['generated'] . '</td>';
+            }
+            if ($row['submitted'] == 0) {
+                echo '<td>0</td>';
+            } else {
+                echo '<td>' . $row['submitted'] . '</td>';
+            }
+
+            if ($row['pointsSum'] == 0) {
+                echo '<td>0</td>';
+            } else {
+                echo '<td>' . $row['pointsSum'] . '</td>';
+            }
             echo '</tr>';
         }
-        echo '</tr>';
+        echo '</tbody>';
+        echo '</table>';
         ?>
-        </tbody>
-    </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+    </script>
 
 
-</div>
+
+
+
 </body>
