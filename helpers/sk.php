@@ -7,4 +7,13 @@ $lan = array(
     "password" => "Heslo",
     "student" => "Žiak",
     "teacher" => "Učiteľ",
+    "file" => "Súbor",
+    "files" => "Súbory",
+    "status" => "Stav",
+    "enable" => "Povoliť",
+    "disable" => "Uzamknúť",
+    "points" => "Body",
+    "students" => "Študenti",
+    "surname" => "Priezvisko",
+    "firstname" => "Meno"
 );

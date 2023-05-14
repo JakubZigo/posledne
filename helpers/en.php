@@ -5,6 +5,16 @@ $lan = array(
     "signingInH1" => "Sign in",
     "login" => "Login",
     "password" => "Password",
-    "student" => "Student",
     "teacher" => "Teacher",
+    "teachers" => "Teachers",
+    "student" => "Student",
+    "students" => "Students",
+    "file" => "File",
+    "files" => "Files",
+    "status" => "Status",
+    "enable" => "Enable",
+    "disable" => "Disable",
+    "surname" => "Surname",
+    "firstname" => "Name",
+    "points" => "Points"
 );
