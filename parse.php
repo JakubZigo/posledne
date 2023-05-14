@@ -68,51 +68,105 @@ function findLatestRow($db, $name) {
     return $id;
 }
 
-function getQuestionsFromDbByFileName($db, $name) {
-    $tasks = array();
+//function getQuestionsFromDbByFileName($db, $name) {
+//    $tasks = array();
+//
+//    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE file_name = :file_name";
+//    $stmt = $db->prepare($sql);
+//    $stmt->bindParam(":file_name", $name, PDO::PARAM_STR);
+//    $stmt->execute();
+//
+//    if ($stmt->rowCount() > 0) {
+//        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+//
+//        foreach ($rows as $row) {
+//            $task = array();
+//            $task['id'] = $row["id"];
+//            $task['name'] = $row["name"];
+//            $task['question'] = $row["question"];
+//            $task['solution'] = $row["solution"];
+//
+//            $tasks[] = $task;
+//        }
+//    } else {
+//        echo "Nenachadza sa v tabulke alebo je duplicitne.";
+//    }
+//
+//    return $tasks;
+//}
+function getQuestionFromDbById($db, $id) {
 
-    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE file_name = :file_name";
+    $sql = "SELECT id, name, question, solution, file_name FROM question WHERE id = :id LIMIT 1";
     $stmt = $db->prepare($sql);
-    $stmt->bindParam(":file_name", $name, PDO::PARAM_STR);
+    $stmt->bindParam(":id", $id, PDO::PARAM_INT);
     $stmt->execute();
 
     if ($stmt->rowCount() > 0) {
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $row = $stmt->fetch();
 
-        foreach ($rows as $row) {
-            $task = array();
-            $task['id'] = $row["id"];
-            $task['name'] = $row["name"];
-            $task['question'] = $row["question"];
-            $task['solution'] = $row["solution"];
-
-            $tasks[] = $task;
-        }
+        return $row;
     } else {
         echo "Nenachadza sa v tabulke alebo je duplicitne.";
     }
-
-    return $tasks;
 }
 
 
 
 
-function printRandomQuestionFromFileName($db, $fileName) {
+//function printRandomQuestionFromFileName($db, $fileName) {
+////    need to include these libraries in html
+////    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+////    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+//
+//    $questions = getQuestionsFromDbByFileName($db, $fileName);
+//
+//    $q = $questions[array_rand($questions)];
+//
+//    $question = $q["question"];
+//    $solution = $q['solution'];
+//    $name = $q['name'];
+//
+//    // Replace \includegraphics with an img tag, assuming the path is correct
+//    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="$1" style="width: 50%"/>', $question);
+//
+//    // Find and modify LaTeX expressions in $question and $solution
+//    $question = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
+//        if (substr($matches[0], 0, 2) === '$$') {
+//            return $matches[0];
+//        } else {
+//            return '$$' . $matches[1] . '$$';
+//        }
+//    }, $question);
+//
+//    $solution = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
+//        if (substr($matches[0], 0, 2) === '$$') {
+//            return $matches[0];
+//        } else {
+//            return '$$' . $matches[1] . '$$';
+//        }
+//    }, $solution);
+//
+//    echo '<div>';
+//    echo '<h2>' . $name . '</h2>';
+//    echo $question;
+//    echo '<div>'."Správná odpověď: ".$solution.'<div>';
+//    echo '</div>';
+//}
+
+
+function printQuestionById($db, $qId) {
 //    need to include these libraries in html
 //    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 //    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-    $questions = getQuestionsFromDbByFileName($db, $fileName);
-
-    $q = $questions[array_rand($questions)];
+    $q = getQuestionFromDbById($db, $qId);
 
     $question = $q["question"];
     $solution = $q['solution'];
     $name = $q['name'];
 
     // Replace \includegraphics with an img tag, assuming the path is correct
-    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="$1" style="width: 50%"/>', $question);
+    $question = preg_replace('/\\\\includegraphics\{(.*?)\}/', '<img src="../$1" style="width: 50%"/>', $question);
 
     // Find and modify LaTeX expressions in $question and $solution
     $question = preg_replace_callback('/\$\$?(.*?)\$\$?/', function($matches) {
@@ -134,45 +188,48 @@ function printRandomQuestionFromFileName($db, $fileName) {
     echo '<div>';
     echo '<h2>' . $name . '</h2>';
     echo $question;
-    echo '<div>'."Správná odpověď: ".$solution.'<div>';
+//    echo '<div>'."Správná odpověď: ".$solution.'<div>';
     echo '</div>';
+
+    return $solution;
 }
 
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-</head>
-<style>
-    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}
-</style>
-<body>
-
-
-
-    <?php
-
-    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-
-//    parseLatexFileToDb($pdo, "blokovka01pr.tex");
-//    parseLatexFileToDb($pdo, "blokovka02pr.tex");
-//    parseLatexFileToDb($pdo, "odozva01pr.tex");
-//    parseLatexFileToDb($pdo, "odozva02pr.tex");
-
-    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
-    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
-    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
-    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
-
-    ?>
-
-</body>
-</html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>-->
+<!--    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>-->
+<!--</head>-->
+<!--<style>-->
+<!--    mjx-container[jax="CHTML"][display="true"] {display: contents !important;}-->
+<!--</style>-->
+<!--<body>-->
+<!---->
+<!---->
+<!---->
+<!--    --><?php
+//
+//    $pdo = new PDO("mysql:host=$hostname;dbname=$dbname", $username, $password);
+//    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//
+//
+////    parseLatexFileToDb($pdo, "blokovka01pr.tex");
+////    parseLatexFileToDb($pdo, "blokovka02pr.tex");
+////    parseLatexFileToDb($pdo, "odozva01pr.tex");
+////    parseLatexFileToDb($pdo, "odozva02pr.tex");
+//
+////    printRandomQuestionFromFileName($pdo, "blokovka01pr.tex");
+////    printRandomQuestionFromFileName($pdo, "blokovka02pr.tex");
+////    printRandomQuestionFromFileName($pdo, "odozva01pr.tex");
+////    printRandomQuestionFromFileName($pdo, "odozva02pr.tex");
+//
+//    printQuestionById($pdo, 35);
+//    ?>
+<!---->
+<!--</body>-->
+<!--</html>-->
 
 
 
