@@ -39,6 +39,16 @@ require_once "../db/Database.php";
     }
 </style>
 <body>
+<div class="container mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+        <form method="post">
+            <input type="hidden" name="lan" value="1">
+            <button type="submit" id="lan"><i class="bi bi-translate m-lg-1" style="font-size: 2rem;"></i></button>
+        </form>
+        <h1 class="big-heading"><?php echo $_SESSION['name']?></h1>
+        <a href="../sign_in/sign_out.php"><i class="bi bi-door-closed" style="font-size: 2rem;"></i></a>
+    </div>
+</div>
 <div class="container">
     <div class="row">
         <?php
@@ -55,7 +65,7 @@ require_once "../db/Database.php";
     </div>
     <div class="row">
         <math-field id="equation-input" style="width: 20rem"></math-field>
-        <button id="submit">Submit</button>
+        <button id="submit"><?php echo $lan['submit'] ?></button>
         <script src="https://unpkg.com/mathlive@0.93.0/dist/mathlive.min.js"></script>
         <script>
         const input = document.getElementById('equation-input');
@@ -63,19 +73,27 @@ require_once "../db/Database.php";
         console.log(expectedLatex);
         input.value = expectedLatex;
 
-        document.getElementById('submit').onclick = function() {
+        document.getElementById('submit').onclick = async function() {
             let latex = input.value;
             let formData = new URLSearchParams();
-            formData.append("user", latex);
+            formData.append("input", latex);
             formData.append("answer", expectedLatex);
-            let equal = fetch('latexCompare.php', {
+            formData.append("student_id", <?php echo $_SESSION['id']?>);
+            formData.append("question_id", <?php echo $question_id ?>);
+            let equal;
+            await fetch('latexEval.php', {
                 method: 'POST',
                 body: formData
-            });
-            if (equal) {
-                console.log("Correct");
+            }).then(response => response.text())
+                .then(data => {
+                    equal = data;
+                })
+                .catch(error => console.error('Error:', error));
+            console.log(equal);
+            if (equal === "1") {
+                console.log("Correct"); // TODO insert into DB
             } else {
-                console.log("Incorrect");
+                console.log("Incorrect"); // TODO insert into DB
             }
         };
         </script>
