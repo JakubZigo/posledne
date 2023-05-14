@@ -7,4 +7,6 @@ $lan = array(
     "password" => "Password",
     "student" => "Student",
     "teacher" => "Teacher",
+    "generate" => "Generate",
+    "score" => "Score: ",
 );
