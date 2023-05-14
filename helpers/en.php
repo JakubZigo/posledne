@@ -20,5 +20,12 @@ $lan = array(
     "firstname" => "Name",
     "points" => "Points",
     "generated" => "Generated",
-    "submitted" => "Submitted"
+    "submitted" => "Submitted",
+    "exercise" => "Exercise",
+    "exercises" => "Exercises",
+    "answer" => "Answer",
+    "correct" => "Correct",
+    "enabled" => "Enabled",
+    "disabled" => "Disabled",
+    "empty" => "Empty",
 );

@@ -10,7 +10,8 @@ td, th {
 }
 
 
-#tableNoEscobar{
+.tableNoEscobar{
     background-color: #FAC898;
     color: #2F4858; /* Change header text color */
+    margin: 1rem;
 }

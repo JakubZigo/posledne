@@ -9,10 +9,14 @@ require_once "../helpers/" . $_SESSION["lang"];
 $db = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+
+// Table 1
 $query = "SELECT name, enabled, max_points FROM latex";
 $stmt = $db->query($query);
 $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+
+// Table 2
 $names = "SELECT id, firstname, surname FROM users WHERE role='student'";
 $stmt1 = $db->query($names);
 $nameResults = $stmt1->fetchAll(PDO::FETCH_ASSOC);
@@ -20,11 +24,6 @@ $nameResults = $stmt1->fetchAll(PDO::FETCH_ASSOC);
 $grades = "SELECT student_id, COUNT(student_id) as 'generated', SUM(submitted) as 'submitted',  SUM(points) as pointsSum FROM answer GROUP BY student_id";
 $stmt2 = $db->query($grades);
 $gradesResults = $stmt2->fetchAll(PDO::FETCH_ASSOC);
-
-
-$exercises = "SELECT  , enabled, max_points FROM latex";
-$stmt = $db->query($query);
-$exerciseResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 $combinedData = [];
@@ -35,6 +34,11 @@ foreach ($nameResults as $nameResult) {
         }
     }
 }
+
+// Table 3
+$table2 = "SELECT users.firstname, users.surname, question.name as 'question', answer.submitted as 'submitted', answer.answer, answer.points as 'points' FROM users JOIN answer ON answer.student_id = users.id JOIN question ON question.id = answer.question_id";
+$stmt = $db->query($table2);
+$table2Results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -134,7 +138,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         for ($i = 0; $i < count($results); $i++) {
             echo '<tr>';
             echo '<td>' . $results[$i]["name"] . '</td>';
-            echo '<td>' . $results[$i]["enabled"] . '</td>';
+            if($results[$i]["enabled"]==1){
+                echo '<td>' . $lan['enabled'] . '</td>';
+            }else{
+                echo '<td>' . $lan['disabled'] . '</td>';
+            }
             echo '<td><form action="teacher.php" method="post">
                     <input type="hidden" name="id" value="' . $i . '">
                     <input type="hidden" name="action" value="enable">
@@ -167,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <th><?php echo $lan['students'] ?></th>
         :</br></h2>
 
-    <div id="tableNoEscobar">
+    <div style="background-color: #FAC898; color: #2F4858; margin-bottom: 4rem;">
         <?php
         echo '<table id="myTable" class="display nowrap"">';
         echo '<thead>';
@@ -213,8 +221,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         });
     </script>
 
+    <h2><br>
+        <th><?php echo $lan['exercises'] ?></th>
+        :</br></h2>
+    <div style="background-color: #FAC898; color: #2F4858;">
+    <?php
+    echo '<table id="myTable2" class="display nowrap"">';
+    echo '<thead>';
+    echo '<tr><th>' . $lan['student'] . '</th><th>' . $lan['exercise'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['correct']  . '</th><th>' . $lan['answer'] . '</th><th>' . $lan['points'] . '</th></tr>';
+    echo '</thead>';
+    echo '<tbody>';
+    foreach ($table2Results as $row) {
+        echo '<tr>';
+        echo '<td>' . $row['firstname'] . " " .  $row['surname'] . '</td>';
+        echo '<td>' . $row['question'] . '</td>';
+
+        if($row['submitted'] ==1) {
+            echo '<td>✓</td>';
+        }else{
+            echo '<td>✕</td>';
+        }
 
 
+        if ($row['points'] == null) {
+            echo '<td>' . $lan['empty'] . '</td>';
+        } else if($row["points"] == 0){
+            echo '<td>✕</td>';
+        }else{
+            echo '<td>✓</td>';
+        }
 
+        if ($row['answer'] == null) {
+            echo '<td>' . $lan['empty'] . '</td>';
+        } else {
+            echo '<td>' . $row['answer'] . '</td>';
+        }
+        if ($row['points'] < 1) {
+            echo '<td>0</td>';
+        } else {
+            echo '<td>' . $row['points'] . '</td>';
+        }
+        echo '</tr>';
+    }
+    echo '</tbody>';
+    echo '</table>';
+    ?>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#myTable2').DataTable({
+            });
+        });
+    </script>
 
 </body>

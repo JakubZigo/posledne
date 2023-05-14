@@ -19,5 +19,12 @@ $lan = array(
     "students" => "Študenti",
     "surname" => "Priezvisko",
     "firstname" => "Meno",
-    "submitted" => "Odovzdané"
+    "submitted" => "Odovzdané",
+    "exercise" => "Úloha",
+    "exercises" => "Úlohy",
+    "answer" => "Odpoveď",
+    "correct"=>"Správnosť",
+    "enabled" => "Sprístupňené",
+    "disabled" => "Nesprístupňené",
+    "empty" => "Prázdny",
 );
