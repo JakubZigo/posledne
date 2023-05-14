@@ -17,7 +17,7 @@ if (isset($_POST['login']) && isset($_POST['password'])){
 
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $sql = "SELECT id, username, password, role, lan FROM Users WHERE username = :username";
+    $sql = "SELECT id, username, password, role, lan FROM users WHERE username = :username";
     $stmt = $pdo->prepare($sql);
     $stmt->bindParam(":username", $_POST["login"]);
 
