@@ -7,4 +7,7 @@ $lan = array(
     "password" => "Heslo",
     "student" => "Žiak",
     "teacher" => "Učiteľ",
+    "generate" => "Vygenerovať",
+    "score" => "Body: ",
+
 );
