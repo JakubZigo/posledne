@@ -59,7 +59,8 @@ require_once "../db/Database.php";
             $answer = printQuestionById($db, $question_id);
             $answer = str_replace("\\", "\\\\", $answer);
             $answer = str_replace(array("\r\n", "\n", "\r"), '\n', $answer);
-
+            $input =  str_replace("\n++++\\begin{equation*}\n++++++++", "", $answer);
+            $input = str_replace("\n++++\\end{equation*}\n", "", $input);
         }
         ?>
     </div>
@@ -69,15 +70,19 @@ require_once "../db/Database.php";
         <script src="https://unpkg.com/mathlive@0.93.0/dist/mathlive.min.js"></script>
         <script>
         const input = document.getElementById('equation-input');
-        const expectedLatex = "<?php echo $answer; ?>";
+        const expectedLatex = "<?php echo $input; ?>";
         console.log(expectedLatex);
         input.value = expectedLatex;
 
         document.getElementById('submit').onclick = async function() {
             let latex = input.value;
+            latex = latex.replace("\\begin{equation*}", "").replace("\\end{equation*}", "").trim();
+            let correct = expectedLatex.replace("\\begin{equation*}", "").replace("\\end{equation*}", "").trim();
+            console.log(latex);
+            console.log(correct);
             let formData = new URLSearchParams();
             formData.append("input", latex);
-            formData.append("answer", expectedLatex);
+            formData.append("answer", correct);
             formData.append("student_id", <?php echo $_SESSION['id']?>);
             formData.append("question_id", <?php echo $question_id ?>);
             let equal;
@@ -91,9 +96,9 @@ require_once "../db/Database.php";
                 .catch(error => console.error('Error:', error));
             console.log(equal);
             if (equal === "1") {
-                console.log("Correct"); // TODO insert into DB
+                console.log("Correct");
             } else {
-                console.log("Incorrect"); // TODO insert into DB
+                console.log("Incorrect");
             }
         };
         </script>
