@@ -1,4 +1,3 @@
-
 <?php
 require_once "../db/Database.php";
 
@@ -33,7 +32,7 @@ function getTask($id, $lan){
 
                         if ($row['submitted'] == 1) {
                             echo '<i class="bi bi-check-circle-fill darkIcon"></i></div></div><div class="row">';
-                            if ($row['points'] == NULL) {
+                            if ($row['points'] === null) {
                                 echo'<p class="card-text">' . $lan['score'] . '? / ' . $latex['max_points'] . '</p>';
                             } else {
                                 echo'<p class="card-text">' . $lan['score'] . $row['points'] . ' / ' . $latex['max_points'] . '</p>';
@@ -54,5 +53,4 @@ function getTask($id, $lan){
                 </div>
             </div>
         </div>';
-
 }

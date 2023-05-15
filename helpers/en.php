@@ -20,5 +20,7 @@ $lan = array(
     "firstname" => "Name",
     "points" => "Points",
     "answerPrompt" => "Enter your answer here",
-    "submit" => "Submit"
+    "submit" => "Submit",
+    "correct" => "Correct",
+    "incorrect" => "Incorrect"
 );
