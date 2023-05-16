@@ -19,5 +19,6 @@ $lan = array(
     "surname" => "Surname",
     "firstname" => "Name",
     "points" => "Points",
-    "answerPrompt" => "Enter your answer here"
+    "answerPrompt" => "Enter your answer here",
+    "submit" => "Submit"
 );
