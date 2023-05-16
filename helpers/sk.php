@@ -24,7 +24,11 @@ $lan = array(
     "exercises" => "Úlohy",
     "answer" => "Odpoveď",
     "correct"=>"Správnosť",
-    "enabled" => "Sprístupňené",
-    "disabled" => "Nesprístupňené",
+    "enabled" => "Sprístupnené",
+    "disabled" => "Nesprístupnené",
     "empty" => "Prázdny",
-);
+    "from" => "Od",
+    "until" => "Do",
+    "submit" => "Aplikovať-dátumy",
+    "free" => "Zrušiť-dátumy"
+    );

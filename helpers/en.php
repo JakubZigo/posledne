@@ -28,4 +28,9 @@ $lan = array(
     "enabled" => "Enabled",
     "disabled" => "Disabled",
     "empty" => "Empty",
+    "until" => "Until",
+    "from" => "From",
+    "submit" => "Submit",
+    "free" => "Anull-dates"
+
 );

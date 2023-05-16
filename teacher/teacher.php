@@ -74,6 +74,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt->execute();
     }
 
+    if (isset($_POST['deadlineId']) && isset($_POST['input1']) && isset($_POST['input2'])) {
+        $name = $results[$_POST["deadlineId"]]["name"];
+        $from = $_POST["input1"];
+        $until = $_POST["input2"];
+
+        if ($from <= $until) {
+            $stmt = $db->prepare("UPDATE latex SET `enabled`= :enabled, `from` = :from, `until` = :until WHERE name = :name");
+            $stmt->bindParam(':name', $name);
+
+            $dateNow = date("Y-m-d");
+            if ($dateNow < $from || $dateNow > $until) {
+                $enabledVal1 = 0;
+            } else {
+                $enabledVal1 = 1;
+            }
+            $stmt->bindParam(':enabled', $enabledVal1);
+            $stmt->bindParam(':from', $from);
+            $stmt->bindParam(':until', $until);
+            $stmt->execute();
+        }
+    }
+
+    if (isset($_POST['nullId'])) {
+        $name = $results[$_POST["nullId"]]["name"];
+        $stmt = $db->prepare("UPDATE latex SET `enabled`= :enabled, `from` = :from, `until` = :until WHERE name = :name");
+        $stmt->bindParam(':name', $name);
+        $enabledVal1 = 1;
+        $stmt->bindParam(':enabled', $enabledVal1);
+        $from = null;
+        $stmt->bindParam(':from', $from);
+        $until = null;
+        $stmt->bindParam(':until', $until);
+        $stmt->execute();
+    }
     header("Refresh:0");
 }
 
@@ -119,9 +153,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="big-heading"><?php echo $lan['teacher'] ?></h1>
     </div>
+
+    <div>
+        <h2>Parse</h2>
+        <?php
+        echo '<form action="teacher.php" method="post">
+                    <input type="hidden" name="parse" value="parse">
+                    <input type="submit" value="Parse">
+                </form>';
+        ?>
+    </div>
+
     <h2><br>
-        <th><?php echo $lan['files'] ?></th>
-        :</br></h2>
+        <th><?php echo $lan['files'] ?></th>:</br></h2>
     <table id="enableTable">
         <thead>
         <tr>
@@ -131,16 +175,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <th><?php echo $lan['disable'] ?></th>
             <th></th>
             <th><?php echo $lan['points'] ?></th>
+            <th></th>
+            <th><?php echo $lan['from'] ?></th>
+            <th><?php echo $lan['until'] ?></th>
+            <td></td>
+            <td></td>
         </tr>
         </thead>
         <tbody>
         <?php
-        for ($i = 0; $i < count($results); $i++) {
+        //        table 1
+        for ($i = 0;
+             $i < count($results);
+             $i++) {
             echo '<tr>';
             echo '<td>' . $results[$i]["name"] . '</td>';
-            if($results[$i]["enabled"]==1){
+            if ($results[$i]["enabled"] == 1) {
                 echo '<td>' . $lan['enabled'] . '</td>';
-            }else{
+            } else {
                 echo '<td>' . $lan['disabled'] . '</td>';
             }
             echo '<td><form action="teacher.php" method="post">
@@ -153,7 +205,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="hidden" name="action" value="disable">
                     <input type="submit" value="   ✕   ">
                 </form></td>';
-
             echo '<td><form action="teacher.php" method="post">
                     <input type="hidden" name="pointsId" value="' . $i . '">
                     <input type="hidden" name="pointsChange" value="minus">
@@ -164,6 +215,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <input type="hidden" name="pointsId" value="' . $i . '">
                     <input type="hidden" name="pointsChange" value="plus">
                     <input type="submit" value="-->">
+                </form></td>';
+            echo '<form action="teacher.php" method="post">
+                <input type="hidden" name="deadlineId" value="' . $i . '">
+                <td><input type="date" name="input1"></td>
+                <td><input type="date" name="input2"></td>
+                <td><input type="submit" value=' . $lan['submit'] . '></td>
+              </form>';
+            echo '<td><form action="teacher.php" method="post">
+                    <input type="hidden" name="nullId" value="' . $i . '">
+                    <input type="submit" value=' . $lan['free'] . '>
                 </form></td>';
             echo '</tr>';
         }
@@ -177,6 +238,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     <div style="background-color: #FAC898; color: #2F4858; margin-bottom: 4rem;">
         <?php
+        //        table 2
         echo '<table id="myTable" class="display nowrap"">';
         echo '<thead>';
         echo '<tr><th>' . $lan['firstname'] . '</th><th>' . $lan['firstname'] . '</th><th>' . $lan['surname'] . '</th><th>' . $lan['generated'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['points'] . '</th></tr>';
@@ -225,53 +287,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <th><?php echo $lan['exercises'] ?></th>
         :</br></h2>
     <div style="background-color: #FAC898; color: #2F4858;">
-    <?php
-    echo '<table id="myTable2" class="display nowrap"">';
-    echo '<thead>';
-    echo '<tr><th>' . $lan['student'] . '</th><th>' . $lan['exercise'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['correct']  . '</th><th>' . $lan['answer'] . '</th><th>' . $lan['points'] . '</th></tr>';
-    echo '</thead>';
-    echo '<tbody>';
-    foreach ($table2Results as $row) {
-        echo '<tr>';
-        echo '<td>' . $row['firstname'] . " " .  $row['surname'] . '</td>';
-        echo '<td>' . $row['question'] . '</td>';
+        <?php
+        echo '<table id="myTable2" class="display nowrap"">';
+        echo '<thead>';
+        echo '<tr><th>' . $lan['student'] . '</th><th>' . $lan['exercise'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['correct'] . '</th><th>' . $lan['answer'] . '</th><th>' . $lan['points'] . '</th></tr>';
+        echo '</thead>';
+        echo '<tbody>';
+        foreach ($table2Results as $row) {
+            echo '<tr>';
+            echo '<td>' . $row['firstname'] . " " . $row['surname'] . '</td>';
+            echo '<td>' . $row['question'] . '</td>';
 
-        if($row['submitted'] ==1) {
-            echo '<td>✓</td>';
-        }else{
-            echo '<td>✕</td>';
-        }
+            if ($row['submitted'] == 1) {
+                echo '<td>✓</td>';
+            } else {
+                echo '<td>✕</td>';
+            }
 
 
-        if ($row['points'] == null) {
-            echo '<td>' . $lan['empty'] . '</td>';
-        } else if($row["points"] == 0){
-            echo '<td>✕</td>';
-        }else{
-            echo '<td>✓</td>';
-        }
+            if ($row['points'] == null) {
+                echo '<td>' . $lan['empty'] . '</td>';
+            } else if ($row["points"] == 0) {
+                echo '<td>✕</td>';
+            } else {
+                echo '<td>✓</td>';
+            }
 
-        if ($row['answer'] == null) {
-            echo '<td>' . $lan['empty'] . '</td>';
-        } else {
-            echo '<td>' . $row['answer'] . '</td>';
+            if ($row['answer'] == null) {
+                echo '<td>' . $lan['empty'] . '</td>';
+            } else {
+                echo '<td>' . $row['answer'] . '</td>';
+            }
+            if ($row['points'] < 1) {
+                echo '<td>0</td>';
+            } else {
+                echo '<td>' . $row['points'] . '</td>';
+            }
+            echo '</tr>';
         }
-        if ($row['points'] < 1) {
-            echo '<td>0</td>';
-        } else {
-            echo '<td>' . $row['points'] . '</td>';
-        }
-        echo '</tr>';
-    }
-    echo '</tbody>';
-    echo '</table>';
-    ?>
+        echo '</tbody>';
+        echo '</table>';
+        ?>
     </div>
 
     <script>
         $(document).ready(function () {
-            $('#myTable2').DataTable({
-            });
+            $('#myTable2').DataTable({});
         });
     </script>
 
