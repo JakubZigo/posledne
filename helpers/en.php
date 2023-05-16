@@ -32,5 +32,4 @@ $lan = array(
     "from" => "From",
     "submit" => "Submit",
     "free" => "Anull-dates"
-
 );

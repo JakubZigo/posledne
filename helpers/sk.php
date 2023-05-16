@@ -31,4 +31,4 @@ $lan = array(
     "until" => "Do",
     "submit" => "Aplikovať-dátumy",
     "free" => "Zrušiť-dátumy"
-    );
+);
