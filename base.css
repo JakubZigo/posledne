@@ -74,6 +74,21 @@ body {
     border-color: #FAC898;
     height: 100%;
 }
+#tut{
+    background-color: transparent;
+    border: none;
+    text-decoration: none;
+    box-shadow: none;
+    display: block;
+    height: 90%;
+    border-radius: 5px;
+    font-size: xx-large;
+    color: #FAC898;
+}
+#tut:hover {
+    border-color: #FAC898;
+    height: 100%;
+}
 a {
     text-decoration: none;
     display: block;
