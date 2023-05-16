@@ -37,7 +37,7 @@ foreach ($nameResults as $nameResult) {
         if ($nameResult['id'] === $gradeResult['student_id']) {
             $combinedData[] = array_merge($nameResult, $gradeResult);
         } else {
-            $combinedData[] = array_merge($nameResult, [0, 0, 0]);
+            $combinedData[] = array_merge($nameResult, ["generated"=> 0, "submitted"=> 0, "pointsSum"=> 0]);
         }
     }
 }
@@ -159,13 +159,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     </div>
 </div>
 
-<div class="container center">
+<div class="container center" style="max-width: 60%!important;">
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="big-heading"><?php echo $lan['teacher'] ?></h1>
     </div>
 
     <div>
-        <h2>Parse</h2>
         <?php
         echo '<form action="teacher.php" method="post">
                 <input type="hidden" name="parse" value="parse">
