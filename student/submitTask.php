@@ -71,18 +71,9 @@ require_once "../db/Database.php";
         <script>
         const input = document.getElementById('equation-input');
         const expectedLatex = "<?php echo $input; ?>";
-        // console.log(expectedLatex);
-        // input.value = expectedLatex;
 
         document.getElementById('submit').onclick = async function() {
             let latex = input.value;
-            // if (latex.includes("\\begin{equation*}")) {
-            //     latex = latex.replace("\\begin{equation*}", "").replace("\\end{equation*}", "").trim();
-            // }
-            // if (latex.includes("y(t)=")) {
-            //     latex = latex.replace("y(t)=", "");
-            //     latex = latex.split("=")[1].trim();
-            // }
             let correct = expectedLatex.replace("\\begin{equation*}", "").replace("\\end{equation*}", "").trim();
             if (correct.includes("y(t)=")) {
                 correct = correct.replace("y(t)=", "");
@@ -90,8 +81,6 @@ require_once "../db/Database.php";
             if (correct.includes("=")) {
                 correct = correct.split("=")[0].trim();
             }
-            // console.log(latex);
-            // console.log(correct);
             let formData = new URLSearchParams();
             formData.append("input", latex);
             formData.append("answer", correct);
@@ -106,7 +95,6 @@ require_once "../db/Database.php";
                     equal = data;
                 })
                 .catch(error => console.error('Error:', error));
-            // console.log(equal);
             if (equal === "1") {
                 console.log("Correct");
                 alert("<?php echo $lan['correct'] ?>");

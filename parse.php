@@ -5,19 +5,17 @@ error_reporting(E_ALL);
 require_once 'db/config.php';
 
 
-function parseFiles() {
-    $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    $items = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("/zadanie99"));
+function parseFiles($pdo) {
+    $items = new RecursiveIteratorIterator(new RecursiveDirectoryIterator("../zadanie99"));
     foreach ($items as $item) {
         if ($item->isFile() && pathinfo($item->getFilename(), PATHINFO_EXTENSION) === 'tex') {
-            parseLatexFileToDb($pdo, $item->getPathname());
+            parseLatexFileToDb($pdo, $item->getFilename());
         }
     }
 }
 
 function parseLatexFileToDb($db, $name) {
-    $texContent = file_get_contents('zadanie99/' . $name);
+    $texContent = file_get_contents('../zadanie99/' . $name);
     preg_match_all('/\\\\section\*\{(.*?)\}\s*\\\\begin\{task\}(.*?)\\\\end\{task\}\s*\\\\begin\{solution\}(.*?)\\\\end\{solution\}/s', $texContent, $matches, PREG_SET_ORDER);
     $check = $db->prepare("SELECT name FROM latex WHERE name = :name");
     $check->bindValue("name", $name, PDO::PARAM_STR);

@@ -42,4 +42,5 @@ CREATE TABLE IF NOT EXISTS users (
 
 ALTER TABLE question ADD CONSTRAINT question_ibfk_1 FOREIGN KEY (latex_id) REFERENCES latex (id) ON DELETE CASCADE ON UPDATE RESTRICT;
 
-INSERT INTO users (username, firstname, surname, password, role, lan) VALUES ("student", "Jozko", "Mrkvicka", "$argon2id$v=19$m=65536,t=4,p=1$Q1FnaEcxQnpaLlNOb1VZSA$SdqhiC84kyMe4oHDm0PLlyeocehVpxxP0yQwG7Hw64k", "student", "slovak");
+INSERT INTO users (username, firstname, surname, password, role, lan) VALUES ("student", "Jozko", "Mrkvicka", "$argon2id$v=19$m=65536,t=4,p=1$Q1FnaEcxQnpaLlNOb1VZSA$SdqhiC84kyMe4oHDm0PLlyeocehVpxxP0yQwG7Hw64k", "student", "slovak"); # password is 00000000
+INSERT INTO users (username, firstname, surname, password, role, lan) VALUES ("teacher", "Jozo", "Mrkva", "$argon2id$v=19$m=65536,t=4,p=1$Q1FnaEcxQnpaLlNOb1VZSA$SdqhiC84kyMe4oHDm0PLlyeocehVpxxP0yQwG7Hw64k", "teacher", "slovak"); # password is 00000000

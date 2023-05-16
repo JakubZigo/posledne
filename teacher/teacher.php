@@ -2,6 +2,7 @@
 session_start();
 require_once "../helpers/checkers.php";
 require_once "../db/config.php";
+require_once "../parse.php";
 setLang();
 require_once "../helpers/" . $_SESSION["lang"];
 
@@ -42,6 +43,9 @@ $table2Results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if (isset($_POST['parse'])) {
+        parseFiles($db);
+    }
     if (isset($_POST['id']) && isset($_POST['action'])) {
         $name = $results[$_POST["id"]]["name"];
         $stmt = $db->prepare("UPDATE latex SET enabled = :enabled WHERE name = :name");
@@ -158,9 +162,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Parse</h2>
         <?php
         echo '<form action="teacher.php" method="post">
-                    <input type="hidden" name="parse" value="parse">
-                    <input type="submit" value="Parse">
-                </form>';
+                <input type="hidden" name="parse" value="parse">
+                <input type="submit" value="Parse">
+              </form>';
         ?>
     </div>
 
