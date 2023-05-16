@@ -1,6 +1,5 @@
 <?php
 require_once "../db/Database.php";
-
 function getTask($id, $lan){
     $db = new Database();
     $db = $db->getConnection();
