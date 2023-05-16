@@ -9,3 +9,16 @@ td, th {
     vertical-align: middle;
 }
 
+
+.tableNoEscobar{
+    background-color: #FAC898;
+    color: #2F4858;
+    margin: 1rem;
+}
+
+
+input{
+    background-color: #FAC898;
+    color: #2F4858;
+    border-radius: 10px;
+}
