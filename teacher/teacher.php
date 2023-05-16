@@ -29,9 +29,15 @@ $gradesResults = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
 $combinedData = [];
 foreach ($nameResults as $nameResult) {
+    if (empty($gradesResults)) {
+        $combinedData[] = array_merge($nameResult, ["generated"=> 0, "submitted"=> 0, "pointsSum"=> 0]);
+        continue;
+    }
     foreach ($gradesResults as $gradeResult) {
         if ($nameResult['id'] === $gradeResult['student_id']) {
             $combinedData[] = array_merge($nameResult, $gradeResult);
+        } else {
+            $combinedData[] = array_merge($nameResult, [0, 0, 0]);
         }
     }
 }
@@ -224,7 +230,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <input type="hidden" name="deadlineId" value="' . $i . '">
                 <td><input type="date" name="input1"></td>
                 <td><input type="date" name="input2"></td>
-                <td><input type="submit" value=' . $lan['submit'] . '></td>
+                <td><input type="submit" value=' . $lan['submitDate'] . '></td>
               </form>';
             echo '<td><form action="teacher.php" method="post">
                     <input type="hidden" name="nullId" value="' . $i . '">
@@ -245,7 +251,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //        table 2
         echo '<table id="myTable" class="display nowrap"">';
         echo '<thead>';
-        echo '<tr><th>' . $lan['firstname'] . '</th><th>' . $lan['firstname'] . '</th><th>' . $lan['surname'] . '</th><th>' . $lan['generated'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['points'] . '</th></tr>';
+        echo '<tr><th>ID</th><th>' . $lan['firstname'] . '</th><th>' . $lan['surname'] . '</th><th>' . $lan['generated'] . '</th><th>' . $lan['submitted'] . '</th><th>' . $lan['points'] . '</th></tr>';
         echo '</thead>';
         echo '<tbody>';
         foreach ($combinedData as $row) {

@@ -31,6 +31,7 @@ $lan = array(
     "until" => "Until",
     "from" => "From",
     "submit" => "Submit",
+    "submitDate" => "Submit",
     "free" => "Anull-dates",
     "answerPrompt" => "Enter your answer here",
     "incorrect" => "Incorrect"

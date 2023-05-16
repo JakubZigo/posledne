@@ -1,0 +1,43 @@
+Technická správa: Webové technológie 2 - Tímovy projekt
+Projekt: Aplikácia pre náhodné generovanie matematických príkladov a kontrolu výsledkov
+
+Server: https://site250.webte.fei.stuba.sk/posledne
+Repozitár: https://github.com/JakubZigo/posledne
+
+Popis projektu:
+Cieľom tohto projektu bolo vytvoriť webovú aplikáciu, ktorá umožňuje generovanie náhodných matematických príkladov a kontrolu výsledkov. Projekt bol úspešne dokončený a všetky požadované funkcionality boli implementované.
+
+Databáza a prístupové údaje:
+Databáza: https://site250.webte.fei.stuba.sk/phpmyadmin/index.php
+Login do databázy: xzatkot
+Heslo do databázy: sfYrTG5acRogj1W
+Login učiteľa: teacher1
+Heslo učiteľa: 00000000
+Login študenta: student1
+Heslo študenta: 00000000
+
+Rozdelenie úloh v týme:
+Jakub Zigo (xzigoj): Základ aplikácie, index, prihlasovanie, grafický vzhľad
+Miroslav Semko (xsemkom): Parsovanie otázok, tutorial, ukladanie v PDF
+Marek Mucha (xmucham1): Rozhranie učiteľa, funkcionalita sprístupnenia otázok
+Tomas Zatko (xzatkot): Rozhranie študenta, písanie odpovedí, kontrola správnosti a porovnanie odpovedí, tvorba Docker package
+
+Využité technológie:
+Bootstrap
+JQuery
+Datatables
+Mathlive
+Polyfill
+Mathjax
+HTML2PDF
+Sympy (python3)
+PDFMake
+JSZip
+Docker
+
+Všetky potrebné inštalácie pre python3, sympy a príslušné závislosti sú zahrnuté v súbore docker-compose.yml. Prihlasovacie údaje pre učiteľa a študenta sú definované v súbore db-init.sql.
+
+Docker prístupové údaje:
+Login do db: user
+Heslo do db: pass
+Tím sa úspešne zhostil vývoja aplikácie s využitím rôznych webových technológií a nástrojov, čím dosiahol výsledok, ktorý spĺňa požiadavky zadania. Projekt bol v plnej miere dokončený a je pripravený na použitie.

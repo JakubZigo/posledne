@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS answer (
     question_id INT NOT NULL,
     date timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
     answer mediumtext,
-    poINTs INT DEFAULT NULL,
+    points INT DEFAULT NULL,
     submitted tinyINT NOT NULL DEFAULT '0'
 );
 
@@ -18,7 +18,7 @@ CREATE TABLE latex (
     name varchar(64) NOT NULL,
     latex mediumtext NOT NULL,
     enabled tinyINT(1) NOT NULL,
-    max_poINTs INT NOT NULL
+    max_points INT NOT NULL
 );
 
 CREATE TABLE question (

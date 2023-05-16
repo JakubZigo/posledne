@@ -1,9 +1,9 @@
 <?php
 require_once "config.php";
 class Database {
-    private $servername = "localhost";
-    private $username = "xzigoj";
-    private $password = "iOJ75sD0tFIIMRz";
+    private $servername = "db";
+    private $username = "user";
+    private $password = "pass";
     private $dbname = "posledne";
     public function getConnection() {
         try {

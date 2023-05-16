@@ -40,7 +40,7 @@ if (isset($_SESSION["loggedIn"])){
 
     <div class="d-flex justify-content-end w-100">
         <div>
-            <button onclick="goToTutorialPage()" id="tut"><i class="bi bi-book m-lg-1" style="font-size: 2rem;"></i></button>
+            <button onclick="goToTutorialPage()" id="tut" style="border: none;background: none"><i class="bi bi-book m-lg-1" style="font-size: 2rem;"></i></button>
         </div>
         <script>
             function goToTutorialPage() {window.location.href = "tutorial_<?php print_r($_SESSION["lang"])?>";}
