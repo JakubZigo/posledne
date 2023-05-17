@@ -4,6 +4,11 @@ class Database {
     private $servername = "localhost";
     private $username = "xzatkot";
     private $password = "sfYrTG5acRogj1W";
+
+    // DOCKER CREDENTIALS
+//    private $servername = "db";
+//    private $username = "user";
+//    private $password = "pass";
     private $dbname = "posledne";
     public function getConnection() {
         try {

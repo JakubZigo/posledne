@@ -18,7 +18,9 @@ CREATE TABLE latex (
     name varchar(64) NOT NULL,
     latex mediumtext NOT NULL,
     enabled tinyINT(1) NOT NULL,
-    max_points INT NOT NULL
+    max_points INT NOT NULL,
+    `from` DATE DEFAULT NULL,
+    `until` DATE DEFAULT NULL
 );
 
 CREATE TABLE question (
